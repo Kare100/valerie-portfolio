@@ -1,0 +1,203 @@
+/* ===================== ValerieOS 98 =====================
+   Windows 98 look from 98.css (vendor/98, MIT), scoped to .vos */
+.vos { position: fixed; inset: 0; z-index: 90; overflow: hidden; background: #008080; color: #000;
+  font-family: "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif; font-size: 12px; -webkit-font-smoothing: none; }
+.vos[hidden] { display: none; }
+.vos *, .vos *::before, .vos *::after { box-sizing: border-box; }
+.vos.opening { animation: vosOn .5s steps(1, end) both; }
+.vos.closing { animation: vosOff .38s ease-in both; }
+@keyframes vosOn { 0% { filter: brightness(3); } 30% { filter: brightness(1.4); } 100% { filter: none; } }
+@keyframes vosOff { 60% { transform: scaleY(.01); filter: brightness(3); } 100% { transform: scale(0, .01); opacity: 0; } }
+
+/* CRT overlay */
+.vo-crt { position: absolute; inset: 0; z-index: 200; pointer-events: none;
+  background: repeating-linear-gradient(180deg, rgba(0,0,0,.06) 0 1px, transparent 1px 3px), radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(0,0,0,.28) 100%);
+  mix-blend-mode: multiply; }
+
+/* boot: BIOS */
+.vo-boot { position: absolute; inset: 0; z-index: 150; background: #000; color: #C0C0C0; padding: 28px 32px; font: 15px/1.6 "Courier New", ui-monospace, monospace; cursor: pointer; }
+.vo-boot .in { max-width: 680px; }
+.vo-boot .logo { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; color: #fff; }
+.vo-boot .logo svg { width: 46px; height: 46px; }
+.vo-boot p { margin: 0; opacity: 0; } .vo-boot p.on { opacity: 1; }
+.vo-boot p b { color: #fff; font-weight: 400; }
+.vo-boot .pb { width: 280px; height: 18px; margin-top: 22px; border: 2px solid #C0C0C0; padding: 2px; }
+.vo-boot .pb i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, #000080 0 10px, transparent 10px 12px); }
+.vo-boot small { display: block; margin-top: 18px; color: #808080; font-size: 13px; }
+
+/* desktop */
+.vo-desk { position: absolute; inset: 0 0 30px 0; overflow: hidden; }
+.vo-wall { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .4s; }
+.vo-wall .night { display: none; }
+.vos.skyline .vo-wall { opacity: 1; }
+.vo-teal { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.vos.skyline .vo-teal { display: none; }
+.vo-teal .wm { display: flex; align-items: center; gap: 14px; opacity: .22; color: #fff; }
+.vo-teal .wm svg { width: 72px; height: 72px; }
+.vo-teal .wm b { font: 700 46px/1 Arial, sans-serif; letter-spacing: -1px; font-style: italic; }
+.vo-teal .wm sup { font-size: 20px; }
+.vo-icons { position: absolute; left: 6px; top: 6px; bottom: 6px; z-index: 1; display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start; gap: 4px 2px; }
+.vo-icon { width: 78px; padding: 4px 2px; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: #fff; text-align: center; font: inherit; font-size: 11px; min-width: 0; min-height: 0; box-shadow: none; }
+.vo-icon svg { width: 34px; height: 34px; image-rendering: pixelated; }
+.vo-icon span { padding: 0 2px; line-height: 1.25; border: 1px dotted transparent; }
+.vo-icon.sel span, .vo-icon:focus-visible span { background: #000080; border-color: #FFFF80; }
+.vo-icon.sel svg { filter: brightness(.6) sepia(1) hue-rotate(190deg) saturate(4); }
+.vo-icon:focus { outline: none; }
+.vos .vo-icon:active { box-shadow: none; padding: 4px 2px; }
+
+/* windows */
+.vo-win { position: absolute; display: flex; flex-direction: column; min-width: 260px; max-width: calc(100vw - 8px); max-height: calc(100% - 8px); }
+.vo-win.min { display: none; }
+.vo-win.max { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+.vo-win.pop { animation: winOpen .14s steps(3, end) both; }
+@keyframes winOpen { from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); } }
+.vos .vo-win:not(.focus) .title-bar { background: linear-gradient(90deg, #808080, #b5b5b5); }
+.vo-tb { cursor: default; user-select: none; touch-action: none; flex: none; }
+.vos .title-bar-text { display: flex; align-items: center; gap: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.vos .title-bar-text svg { width: 14px; height: 14px; flex: none; }
+.vo-body { flex: 1; min-height: 0; overflow: auto; margin: 2px !important; }
+.vo-rs { position: absolute; right: 2px; bottom: 2px; width: 13px; height: 13px; cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 45%, #fff 45% 52%, #808080 52% 60%, transparent 60% 68%, #fff 68% 75%, #808080 75% 83%, transparent 83%); }
+
+/* 90s home page (like Henry's inner site) */
+.vo-welcome { background: #fff; min-height: 100%; padding: 30px 26px 26px; text-align: center; font-family: "Times New Roman", Times, serif; color: #000; border: 2px inset #dfdfdf; }
+.vo-welcome h1 { margin: 0; font: 700 clamp(30px, 6vw, 52px)/1 "Times New Roman", Times, serif; letter-spacing: -0.5px; }
+.vo-welcome h2 { margin: 8px 0 0; font: 400 clamp(16px, 2.6vw, 22px) "Times New Roman", Times, serif; }
+.vo-welcome p { max-width: 50ch; margin: 18px auto 0; font-size: 16px; line-height: 1.45; }
+.vo-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; margin-top: 22px; }
+.vos .vo-nav button { all: unset; cursor: pointer; color: #0000EE; text-decoration: underline; font: 16px "Times New Roman", Times, serif; }
+.vos .vo-nav button:hover { color: #EE0000; }
+.vos .vo-nav button:focus-visible { outline: 1px dotted #000; }
+.vo-welcome .tip { margin-top: 26px; font: 12px "Courier New", monospace; color: #555; }
+
+/* explorer */
+.vo-path { display: flex; align-items: center; gap: 8px; padding: 4px 6px; margin-bottom: 4px; background: #fff; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; }
+.vo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; padding: 12px; background: #fff; min-height: calc(100% - 30px); box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; }
+.vo-grid .vo-icon { width: auto; color: #000; }
+.vo-grid .vo-icon small { font-size: 10px; color: #555; }
+.vo-grid .vo-icon:hover span { color: #000080; }
+
+/* project window */
+.vo-proj { background: #fff; min-height: 100%; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; }
+.vo-proj .hero { aspect-ratio: 16 / 8; display: grid; place-items: center; overflow: hidden; border-bottom: 2px groove #dfdfdf; }
+.vo-proj .hero .phone-f { width: 140px; }
+.vo-proj .hero .browser { width: 80%; }
+.vo-proj .hero .pz, .vo-proj .hero .fn { transform: scale(.82); }
+.vo-proj .hero, .vo-proj .hero * { font-family: var(--f-b); -webkit-font-smoothing: antialiased; }
+.vo-proj .hero .ag *, .vo-proj .hero .pz .top2 { font-family: inherit; }
+.vo-proj .txt { padding: 14px 16px 18px; }
+.vo-proj h3 { margin: 0; font: 700 22px "Times New Roman", Times, serif; }
+.vo-proj h3 em { font-style: italic; font-weight: 400; font-size: 16px; margin-left: 6px; color: #555; }
+.vo-proj p { margin: 8px 0 0; font-size: 12px; line-height: 1.5; }
+.vo-proj .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.vo-proj .tags i { font-style: normal; padding: 1px 6px; background: #c0c0c0; box-shadow: inset -1px -1px #808080, inset 1px 1px #fff; }
+.vo-proj .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.vo-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 75px; min-height: 23px; padding: 0 12px; background: #c0c0c0; color: #000; text-decoration: none;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf; }
+.vo-btn.dark { font-weight: 700; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #0a0a0a, inset -2px -2px #fff, inset 2px 2px #fff, inset -3px -3px #808080, inset 3px 3px #dfdfdf; }
+.vo-btn:active { box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; }
+.vo-btn:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
+
+/* documents */
+.vo-doc { background: #fff; min-height: 100%; padding: 16px 18px 20px; font: 13px/1.55 "Times New Roman", Times, serif; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; }
+.vo-doc h3 { margin: 0 0 2px; font: 700 22px "Times New Roman", Times, serif; }
+.vo-doc h4 { margin: 16px 0 4px; font: 700 13px Arial, sans-serif; text-decoration: underline; }
+.vo-doc p { margin: 4px 0 0; }
+.vo-doc .job { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 6px 0; }
+.vo-doc .job b { font-size: 15px; } .vo-doc .job em { font-style: italic; font-weight: 400; }
+.vo-doc .job span { font: 11px Arial, sans-serif; color: #555; padding-top: 3px; }
+.vo-doc .job p { grid-column: 1 / -1; margin: 0; }
+.vo-doc.mono { font: 13px/1.5 "Courier New", ui-monospace, monospace; white-space: pre-wrap; }
+
+/* git log / terminal: MS-DOS */
+.vo-git, .vo-term { background: #000; color: #C0C0C0; font: 14px/1.45 "Courier New", ui-monospace, monospace; padding: 8px 10px; min-height: 100%; }
+.vo-git .c { padding: 6px 0; }
+.vo-git .h { color: #FFFF55; } .vo-git a { color: #55FFFF; } .vo-git .m { color: #55FF55; } .vo-git .r { color: #FFFF55; } .vo-git .d { color: #AAAAAA; }
+.vo-term { cursor: text; }
+.vo-term .ln { white-space: pre-wrap; word-break: break-word; }
+.vo-term .p { color: #C0C0C0; } .vo-term .ok { color: #55FF55; } .vo-term .er { color: #FF5555; } .vo-term .dim { color: #C0C0C0; }
+.vo-term a { color: #55FFFF; }
+.vo-term .row { display: flex; gap: 0; }
+.vos .vo-term input { flex: 1; min-width: 0; height: auto; padding: 0; background: none; border: 0; box-shadow: none; outline: 0; color: #fff; font: inherit; caret-color: #fff; }
+
+/* mail */
+.vo-mail { display: grid; gap: 8px; padding: 8px 4px; }
+.vo-mail label { display: grid; grid-template-columns: 60px minmax(0, 1fr); align-items: center; gap: 8px; }
+.vos .vo-mail input, .vos .vo-mail textarea { width: 100%; }
+.vos .vo-mail textarea { min-height: 120px; resize: vertical; font: 13px "Courier New", monospace; }
+.vo-mail .to { padding: 3px 4px; background: #fff; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; }
+
+/* recycle bin */
+.vo-bin { padding: 10px; display: grid; gap: 12px; }
+.vo-bin .file { display: flex; gap: 10px; align-items: center; padding: 8px; background: #fff; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; }
+.vo-bin .file svg { width: 32px; height: 32px; flex: none; }
+.vo-bin .file b { display: block; } .vo-bin .file small { color: #555; }
+.vo-bin .acts { display: flex; gap: 6px; justify-content: flex-end; }
+.vo-bin .msg { min-height: 1.4em; }
+
+/* taskbar */
+.vo-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 30px; z-index: 50; display: flex; align-items: center; gap: 4px; padding: 2px 3px; background: #c0c0c0; box-shadow: inset 0 1px #dfdfdf, inset 0 2px #fff; }
+.vos .vo-start { height: 24px; min-width: 0; display: flex; align-items: center; gap: 4px; padding: 0 6px 0 4px; font-weight: 700; }
+.vo-start svg { width: 18px; height: 18px; }
+.vos .vo-start[aria-expanded="true"] { box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; }
+.vo-tasks { flex: 1; display: flex; gap: 3px; overflow: hidden; min-width: 0; padding-left: 4px; border-left: 1px solid #808080; box-shadow: -1px 0 #fff inset; }
+.vos .vo-task { height: 24px; width: 160px; min-width: 0; padding: 0 6px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vos .vo-task.on { font-weight: 700; background: repeating-conic-gradient(#c0c0c0 0 25%, #fff 0 50%) 0 0 / 2px 2px;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080; }
+.vo-clock { height: 24px; display: flex; align-items: center; padding: 0 10px; box-shadow: inset -1px -1px #fff, inset 1px 1px #808080; white-space: nowrap; }
+
+/* start menu */
+.vo-menu { position: absolute; left: 2px; bottom: 30px; z-index: 60; width: 230px; display: flex; background: #c0c0c0; padding: 3px;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #fff; }
+.vo-menu[hidden] { display: none; }
+.vo-menu .side { width: 26px; background: linear-gradient(0deg, #000080, #1084d0); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; }
+.vo-menu .side span { writing-mode: vertical-rl; transform: rotate(180deg); color: #c0c0c0; font: 400 18px Arial, sans-serif; letter-spacing: .5px; }
+.vo-menu .side b { color: #fff; font-weight: 700; }
+.vo-menu ul { list-style: none; margin: 0; padding: 0; flex: 1; }
+.vos .vo-menu li button { all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 8px; padding: 6px 8px; cursor: pointer; font: inherit; color: #000; }
+.vo-menu li button svg { width: 22px; height: 22px; flex: none; }
+.vos .vo-menu li button:hover, .vos .vo-menu li button:focus-visible { background: #000080; color: #fff; }
+.vo-menu hr { border: 0; border-top: 1px solid #808080; border-bottom: 1px solid #fff; margin: 3px 2px; }
+
+/* entry points in the story */
+.use-laptop { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 11px 18px; border-radius: 99px; border: 0; background: var(--amber); color: #1A1406; font: 700 .92rem var(--f-b); cursor: pointer; box-shadow: 0 10px 30px -10px rgba(255,181,71,.7); }
+.use-laptop:hover { background: #fff; }
+.use-laptop .k { font: 700 .7rem var(--f-m); padding: 2px 6px; border-radius: 5px; background: rgba(26,20,6,.12); }
+.cap .use-laptop { pointer-events: none; }
+.cap.on .use-laptop { pointer-events: auto; }
+
+/* phones */
+@media (max-width: 700px) {
+  .vo-icons { right: 6px; bottom: auto; flex-direction: row; }
+  .vo-icon { width: calc(25% - 2px); }
+  .vo-win { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+  .vo-rs, .vos .title-bar-controls .mx { display: none; }
+  .vos .vo-task { width: 92px; }
+  .vo-teal .wm b { font-size: 30px; } .vo-teal .wm svg { width: 48px; height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) { .vos.opening, .vos.closing, .vo-win.pop { animation: none; } }
+
+/* ===================== Chapter 6: the 3D desk ===================== */
+.room { position: relative; z-index: 3; height: 100vh; height: 100svh; min-height: 520px; overflow: hidden; background: #E9D9C4; }
+.room canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.room-ui { position: absolute; left: max(20px, 5vw); top: max(96px, 14vh); max-width: 380px; color: #14182B; transition: opacity .5s, transform .5s; pointer-events: none; }
+.room-ui .k { font: 500 .74rem var(--f-m); letter-spacing: .16em; text-transform: uppercase; color: #C2412B; margin: 0 0 10px; }
+.room-ui h2 { margin: 0; font: 800 clamp(2.2rem, 5vw, 3.8rem)/.95 var(--f-d); letter-spacing: -0.045em; }
+.room-ui p { margin: 14px 0 0; color: #4A4F63; font-size: 1.02rem; }
+.room-ui .use-laptop { pointer-events: auto; }
+.room-hint { position: absolute; left: 50%; bottom: 7vh; translate: -50% 0; pointer-events: none; transition: opacity .4s; }
+.room-hint span { display: inline-block; padding: 8px 14px; border-radius: 99px; background: rgba(20,24,43,.85); color: #fff; font: 600 .82rem var(--f-m); }
+.room.hot .room-hint span { background: #F2603F; }
+.room.zooming .room-ui, .room.zooming .room-hint { opacity: 0; transform: translateY(-10px); }
+.room:not(.ready) .room-hint { opacity: 0; }
+.room.no-webgl { display: grid; place-items: center; }
+.room.no-webgl canvas, .room.no-webgl .room-hint { display: none; }
+.room.no-webgl .room-ui { position: static; text-align: center; }
+@media (max-width: 700px) { .room-ui { top: 84px; right: 20px; } .room-ui h2 { font-size: 2rem; } .room-ui p { font-size: .92rem; } }
+/* desktop icons must not look like 98.css buttons */
+.vos button.vo-icon { background: none; box-shadow: none; min-width: 0; min-height: 0; border: 0; padding: 4px 2px; }
+.vos button.vo-icon:active { box-shadow: none; padding: 4px 2px; }
+.vos button.vo-icon:focus { outline: none; }
+.vos .vo-grid button.vo-icon:focus-visible span { background: #000080; color: #fff; }
+.vo-body > div:has(> .vo-grid) { height: 100%; display: flex; flex-direction: column; }
+.vos .vo-grid { flex: 1; min-height: 0; align-content: start; }
