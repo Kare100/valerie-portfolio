@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A1230'/%3E%3Cpath d='M14 18l9 28 9-28M36 46V18l7 16 7-16v28' fill='none' stroke='%23FFB547' stroke-width='5' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600&display=swap">
 <style>
 :root {
   --night: #0A1230;
@@ -42,6 +42,8 @@ button { font: inherit; color: inherit; }
 /* ---------- top bar ---------- */
 .top { position: fixed; z-index: 40; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px max(16px, env(safe-area-inset-left)); pointer-events: none; }
 .top > * { pointer-events: auto; }
+.top { transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
+.top.solid { background: rgba(10,18,48,.82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom-color: var(--line); }
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--f-d); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
 .logo svg { width: 34px; height: 34px; }
 .top-r { display: flex; gap: 8px; }
@@ -164,44 +166,133 @@ button { font: inherit; color: inherit; }
 .btn:hover { background: rgba(10,18,48,.7); }
 .btn.amber { background: var(--amber); color: #1A1406; border-color: var(--amber); }
 
-/* ---------- fast-scan section ---------- */
-.after { position: relative; z-index: 2; background: var(--night); }
-.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
-.after section { padding: clamp(72px, 10vw, 120px) 0 0; }
+/* ---------- after the story: split layout ---------- */
+.after { position: relative; z-index: 2; background: var(--night); --mx: -999px; --my: -999px; }
+.after::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(520px circle at var(--mx) var(--my), rgba(61,214,198,.07), transparent 60%); }
+.wrap { width: min(1200px, 100% - 32px); margin-inline: auto; position: relative; z-index: 1; }
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: 64px; }
+.side-in { position: sticky; top: 0; min-height: 100vh; padding: 120px 0 48px; display: flex; flex-direction: column; }
 .eyebrow { font-family: var(--f-m); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); margin: 0 0 12px; }
-.h2 { font-family: var(--f-d); font-weight: 800; letter-spacing: -0.035em; line-height: 1; font-size: clamp(2.2rem, 5.4vw, 4rem); margin: 0 0 14px; }
-.lead { color: var(--ink-2); max-width: 46ch; margin: 0 0 40px; font-size: 1.05rem; }
-.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-@media (max-width: 960px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 620px) { .cards { grid-template-columns: minmax(0, 1fr); } }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; transition: transform .25s, border-color .25s; min-width: 0; }
-.card:hover { border-color: var(--amber); }
-.card .n { font-family: var(--f-m); font-size: .72rem; color: var(--muted); }
-.card h3 { font-family: var(--f-d); font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em; margin: 0; line-height: 1.1; }
-.card p { margin: 0; color: var(--ink-2); font-size: .94rem; }
-.card .tg { display: flex; flex-wrap: wrap; gap: 5px; }
-.card .tg span { font-family: var(--f-m); font-size: .68rem; padding: 3px 9px; border-radius: 99px; background: var(--night-2); border: 1px solid var(--line); color: var(--ink-2); }
-.card .lk { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
-.card .lk a { font-size: .84rem; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 99px; border: 1px solid var(--line); }
-.card .lk a:first-child { background: var(--ink); color: var(--night); border-color: var(--ink); }
-.card .lk a:hover { border-color: var(--amber); }
-.card.feat { grid-column: span 2; background: linear-gradient(135deg, #133D35, var(--panel) 60%); }
-@media (max-width: 620px) { .card.feat { grid-column: auto; } }
-@media (min-width: 961px) { .card.wide { grid-column: span 2; } }
-.badge { display: inline-block; font-family: var(--f-m); font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: var(--amber); color: #1A1406; margin-left: 8px; vertical-align: middle; }
+.side-name { font-family: var(--f-d); font-weight: 800; font-size: clamp(2.4rem, 4.4vw, 3.6rem); letter-spacing: -0.04em; line-height: .95; margin: 0; }
+.side-role { font-family: var(--f-d); font-weight: 600; font-size: 1.2rem; color: var(--ink); margin: 12px 0 0; }
+.side-lead { color: var(--ink-2); max-width: 34ch; margin: 14px 0 0; }
+.toc { display: grid; gap: 4px; margin: 44px 0 0; }
+.toc a { display: flex; align-items: center; gap: 14px; padding: 8px 0; text-decoration: none; font-family: var(--f-m); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); width: max-content; }
+.toc a i { display: block; height: 1px; width: 32px; background: var(--muted); transition: width .25s, background .25s; }
+.toc a:hover, .toc a.on { color: var(--ink); }
+.toc a:hover i, .toc a.on i { width: 64px; background: var(--amber); }
+.side-foot { margin-top: auto; padding-top: 40px; display: grid; gap: 16px; }
+.socials { display: flex; flex-wrap: wrap; gap: 18px; font-size: .92rem; }
+.socials a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid transparent; }
+.socials a:hover { color: var(--ink); border-color: var(--amber); }
+.kbd-hint { display: inline-flex; align-items: center; gap: 8px; width: max-content; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--night-2); color: var(--ink-2); font-size: .84rem; cursor: pointer; }
+.kbd-hint:hover { border-color: var(--amber); color: var(--ink); }
+kbd { font-family: var(--f-m); font-size: .72rem; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--line); border-bottom-width: 2px; background: var(--night); color: var(--ink); }
+.status { display: flex; align-items: center; gap: 8px; margin: 0; font-family: var(--f-m); font-size: .74rem; color: var(--muted); }
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px rgba(61,214,198,.15); }
+.main-col { padding: 120px 0 0; min-width: 0; }
+.main-col section { padding: 0 0 clamp(72px, 9vw, 112px); scroll-margin-top: 90px; }
+.sec-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0 0 24px; }
+.sec-h h2 { font-family: var(--f-d); font-weight: 800; font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -0.03em; margin: 0; line-height: 1; }
+.sec-h span { font-family: var(--f-m); font-size: .74rem; color: var(--muted); }
+.sec-p { color: var(--ink-2); margin: -10px 0 26px; max-width: 56ch; }
+@media (max-width: 1023px) {
+  .split { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side-in { position: static; min-height: 0; padding: 96px 0 8px; }
+  .toc { display: none; }
+  .side-foot { margin-top: 0; padding-top: 24px; }
+  .main-col { padding-top: 56px; }
+}
 
-.xp { display: grid; border-top: 1px solid var(--line); }
-.xp div { display: grid; grid-template-columns: 140px minmax(0, 1fr) minmax(0, 1.4fr); gap: 6px 28px; padding: 20px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
-.xp .w { font-family: var(--f-m); font-size: .78rem; color: var(--muted); }
-.xp b { font-family: var(--f-d); font-size: 1.3rem; letter-spacing: -0.02em; }
-.xp b small { display: block; font-family: var(--f-b); font-size: .86rem; color: var(--teal); font-weight: 500; letter-spacing: 0; }
-.xp span:last-child { color: var(--ink-2); font-size: .95rem; }
-@media (max-width: 760px) { .xp div { grid-template-columns: minmax(0, 1fr); } }
-.skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
-.skills span { font-family: var(--f-m); font-size: .8rem; padding: 7px 13px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink-2); }
+/* bento */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.tile { position: relative; grid-column: span 2; display: flex; flex-direction: column; min-width: 0; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; transition: border-color .25s; }
+.tile:hover { border-color: var(--amber); }
+.t-full { grid-column: span 6; } .t-half { grid-column: span 3; }
+.tile .art { height: 120px; position: relative; overflow: hidden; display: grid; place-items: center; border-bottom: 1px solid var(--line); }
+.t-full .art { height: 150px; }
+.tile .bd { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.tile .n { font-family: var(--f-m); font-size: .7rem; color: var(--muted); }
+.tile h3 { font-family: var(--f-d); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.02em; margin: 0; line-height: 1.1; }
+.t-full h3 { font-size: 1.7rem; }
+.tile p { margin: 0; color: var(--ink-2); font-size: .92rem; }
+.tile .tg { display: flex; flex-wrap: wrap; gap: 5px; }
+.tile .tg span { font-family: var(--f-m); font-size: .66rem; padding: 3px 9px; border-radius: 99px; background: var(--night-2); border: 1px solid var(--line); color: var(--ink-2); }
+.tile .lk { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px; }
+.tile .lk a { font-size: .82rem; font-weight: 600; text-decoration: none; padding: 6px 13px; border-radius: 99px; border: 1px solid var(--line); }
+.tile .lk a:first-child { background: var(--ink); color: var(--night); border-color: var(--ink); }
+.tile .lk a:hover { border-color: var(--amber); }
+.tile.accent-teal { border-top: 3px solid var(--teal); } .tile.accent-amber { border-top: 3px solid var(--amber); } .tile.accent-violet { border-top: 3px solid var(--violet); }
+.t-stat { grid-column: span 2; padding: 20px; justify-content: space-between; gap: 18px; text-decoration: none; }
+.t-stat b { font-family: var(--f-d); font-weight: 800; font-size: 2.6rem; letter-spacing: -0.04em; line-height: 1; color: var(--amber); }
+.t-stat span { color: var(--ink-2); font-size: .9rem; }
+.t-full .row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+.t-full .row .art { height: auto; min-height: 220px; border-bottom: 0; border-left: 1px solid var(--line); order: 2; }
+.badge { display: inline-block; font-family: var(--f-m); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: var(--amber); color: #1A1406; margin-left: 8px; vertical-align: middle; }
+.bars { display: flex; align-items: center; gap: 4px; height: 70px; }
+.bars i { width: 4px; border-radius: 2px; background: var(--teal); }
+.a-pesa-dial { position: relative; width: 120px; height: 66px; }
+.a-pesa-dial svg { width: 100%; height: 100%; }
+.a-pesa-dial b { position: absolute; left: 0; right: 0; bottom: -4px; text-align: center; font-family: var(--f-d); font-weight: 800; font-size: 1.7rem; color: #E9FBEF; }
+@media (max-width: 760px) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tile, .t-full, .t-half { grid-column: span 2; }
+  .t-stat { grid-column: span 1; }
+  .t-stat.wide-sm { grid-column: span 2; }
+  .t-full .row { grid-template-columns: minmax(0, 1fr); }
+  .t-full .row .art { min-height: 150px; border-left: 0; border-bottom: 1px solid var(--line); order: 0; }
+  .t-stat b { font-size: 2.1rem; }
+}
 
-.contact { margin: clamp(72px, 10vw, 120px) 0 0; border-radius: 26px; padding: clamp(32px, 7vw, 80px); background: linear-gradient(135deg, #FFB547, #FF8A57); color: #1A1406; position: relative; overflow: hidden; }
-.contact h2 { font-family: var(--f-d); font-weight: 800; letter-spacing: -0.045em; line-height: .95; font-size: clamp(2.4rem, 7vw, 5.4rem); margin: 0; max-width: 13ch; }
+/* hand-drawn note */
+.note { font-family: "Caveat", "Comic Sans MS", cursive; font-size: 1.45rem; color: var(--amber); display: inline-flex; align-items: flex-end; gap: 4px; transform: rotate(-3deg); margin: 0 0 4px 8px; }
+.note svg { width: 46px; height: 40px; }
+
+/* open source: git log */
+.gitlog { list-style: none; margin: 0; padding: 0; border-radius: 18px; border: 1px solid var(--line); background: #0D1638; font-family: var(--f-m); overflow: hidden; }
+.gitlog li { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 4px 16px; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+.gitlog li:last-child { border-bottom: 0; }
+.gitlog .st { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--teal); padding-top: 3px; }
+.gitlog .st.rev { color: var(--amber); }
+.gitlog a { font-weight: 700; font-size: .9rem; color: var(--ink); text-decoration: none; }
+.gitlog a:hover { color: var(--amber); }
+.gitlog p { grid-column: 2; margin: 0; font-family: var(--f-b); font-size: .9rem; color: var(--ink-2); }
+.gitlog .head { display: block; padding: 10px 20px; font-size: .72rem; color: var(--muted); border-bottom: 1px solid var(--line); background: #0A1230; }
+@media (max-width: 520px) { .gitlog li { grid-template-columns: minmax(0, 1fr); } .gitlog p { grid-column: 1; } }
+
+/* experience timeline */
+.tl { list-style: none; margin: 0; padding: 0 0 0 22px; position: relative; }
+.tl::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+.tl li { position: relative; padding: 0 0 26px; }
+.tl li::before { content: ""; position: absolute; left: -22px; top: 7px; width: 11px; height: 11px; border-radius: 50%; background: var(--night); border: 2px solid var(--muted); }
+.tl li.now::before { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 0 4px rgba(255,181,71,.18); }
+.tl .w { font-family: var(--f-m); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.tl li.now .w { color: var(--amber); }
+.tl b { display: block; font-family: var(--f-d); font-size: 1.25rem; letter-spacing: -0.02em; margin-top: 2px; }
+.tl b small { font-family: var(--f-b); font-weight: 500; font-size: .86rem; color: var(--teal); letter-spacing: 0; margin-left: 6px; }
+.tl p { margin: 4px 0 0; color: var(--ink-2); font-size: .94rem; }
+.skillset { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 18px; }
+.skillset div { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; background: var(--panel); }
+.skillset h3 { margin: 0 0 8px; font-family: var(--f-m); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--amber); font-weight: 500; }
+.skillset p { margin: 0; color: var(--ink-2); font-size: .9rem; line-height: 1.7; }
+
+/* command menu */
+.cmdk { position: fixed; inset: 0; z-index: 80; display: grid; place-items: start center; padding: 14vh 16px 16px; background: rgba(6,10,28,.6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.cmdk[hidden] { display: none; }
+.cmdk-box { width: min(560px, 100%); border-radius: 16px; background: #0D1638; border: 1px solid #2A3A7A; box-shadow: 0 40px 80px -20px rgba(0,0,0,.7); overflow: hidden; font-family: var(--f-m); }
+.cmdk-in { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.cmdk-p { color: var(--amber); font-size: .8rem; white-space: nowrap; }
+.cmdk-in input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; color: var(--ink); font: 500 .95rem var(--f-m); }
+.cmdk-in input::placeholder { color: var(--muted); }
+.cmdk ul { list-style: none; margin: 0; padding: 6px; max-height: min(52vh, 380px); overflow: auto; }
+.cmdk li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: var(--ink-2); font-size: .86rem; cursor: pointer; }
+.cmdk li small { color: var(--muted); font-size: .7rem; white-space: nowrap; }
+.cmdk li.sel { background: #1B2860; color: var(--ink); }
+.cmdk li.empty { cursor: default; color: var(--muted); }
+.cmdk-ft { display: flex; flex-wrap: wrap; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--line); font-size: .68rem; color: var(--muted); }
+
+.contact { margin: 0; border-radius: 26px; padding: clamp(32px, 7vw, 80px); background: linear-gradient(135deg, #FFB547, #FF8A57); color: #1A1406; position: relative; overflow: hidden; }
+.contact h2 { font-family: var(--f-d); font-weight: 800; letter-spacing: -0.045em; line-height: .95; font-size: clamp(2.2rem, 4.6vw, 3.8rem); margin: 0; max-width: 13ch; }
 .contact p { font-size: 1.1rem; max-width: 42ch; margin: 18px 0 28px; }
 .contact .btn { color: #1A1406; border-color: rgba(26,20,6,.35); background: rgba(255,255,255,.3); }
 .contact .btn.dark { background: #1A1406; color: #FFB547; border-color: #1A1406; }
@@ -223,6 +314,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8p
     <span>Valerie Mwangi</span>
   </a>
   <div class="top-r">
+    <button class="chip hide-sm" type="button" data-cmdk aria-label="Open command menu"><kbd>⌘</kbd><kbd>K</kbd></button>
     <a class="chip hide-sm" href="#work">Skip the story ↓</a>
     <a class="chip amber" href="#contact">Hire me</a>
   </div>
@@ -518,72 +610,140 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8p
   </div>
 </div>
 
-<!-- =================== FAST SCAN =================== -->
-<div class="after">
-  <div class="wrap">
-    <section id="work" aria-labelledby="work-h">
-      <p class="eyebrow">The quick version</p>
-      <h2 class="h2" id="work-h">Selected projects</h2>
-      <p class="lead">Short on time? Everything from the story, in one place. All code is public on GitHub.</p>
-      <div class="cards">
-        <article class="card feat"><span class="n">01 · capstone</span><h3>AgriSmart Kenya <span class="badge">Featured</span></h3>
-          <p>Bilingual English/Swahili app: farmers photograph a sick leaf and get a Gemini-powered diagnosis, treatment plan, market prices and weather advice. Photos are compressed for slow rural networks, AI output is matched to a structured disease table, and there's CI with unit and integration tests.</p>
-          <div class="tg"><span>React Native</span><span>Expo</span><span>Supabase</span><span>PostgreSQL</span><span>Gemini</span><span>Jest</span></div>
-          <div class="lk"><a href="https://github.com/Kare100/agrismart-kenya" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">02 · fintech</span><h3>PesaScore</h3><p>Reads an M-Pesa statement and returns an explainable credit score (300–850) and a loan limit the person can afford, with the reasons in plain language.</p>
-          <div class="tg"><span>Java 21</span><span>REST API</span><span>Docker</span><span>GitHub Actions</span></div>
-          <div class="lk"><a href="https://github.com/Kare100/pesascore" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">03 · AI agent</span><h3>Fundi Notes</h3><p>Voice notes from field technicians become structured job reports with missing-info flags and a daily summary.</p>
-          <div class="tg"><span>FastAPI</span><span>React</span><span>TypeScript</span><span>LLMs</span></div>
-          <div class="lk"><a href="https://github.com/Kare100/fundi-notes" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">04 · PWA</span><h3>RIELA Connect</h3><p>Connects farmers in Kenya and Ghana to post-harvest services, with bookings, price trends, weather and an AI advisor.</p>
-          <div class="tg"><span>Next.js</span><span>TypeScript</span><span>Tailwind</span></div>
-          <div class="lk"><a href="https://riela-connect-1.vercel.app" target="_blank" rel="noopener">Live demo</a><a href="https://github.com/Kare100/riela-connect" target="_blank" rel="noopener">Code</a></div></article>
-        <article class="card"><span class="n">05 · marketplace</span><h3>SNDBX Experts</h3><p>Matches small businesses with advisors in four cities; time-zone-aware booking, M-Pesa and 30 tests.</p>
-          <div class="tg"><span>Flask</span><span>Python</span><span>pytest</span></div>
-          <div class="lk"><a href="https://github.com/Kare100/sndbx-experts" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">06 · e-commerce</span><h3>Shaba Jewellery</h3><p>Editorial store with cart, checkout, a Postgres API and full SEO: canonicals, Open Graph, structured data.</p>
-          <div class="tg"><span>Nuxt 3</span><span>Tailwind</span><span>Neon</span></div>
-          <div class="lk"><a href="https://shaba-jewellery.vercel.app" target="_blank" rel="noopener">Live demo</a><a href="https://github.com/Kare100/shaba-jewellery" target="_blank" rel="noopener">Code</a></div></article>
-        <article class="card wide"><span class="n">07 · open source</span><h3>Hiero SDKs</h3><p>Three merged pull requests through maintainer review: removed dead helpers and added missing tests in the JavaScript SDK, and fixed a CI workflow that reported false broken links in the Python SDK.</p>
-          <div class="tg"><span>JavaScript</span><span>Python</span><span>GitHub Actions</span></div>
-          <div class="lk"><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4715" target="_blank" rel="noopener">JS #4715</a><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4767" target="_blank" rel="noopener">JS #4767</a><a href="https://github.com/hiero-ledger/hiero-sdk-python/pull/2795" target="_blank" rel="noopener">Python #2795</a></div></article>
-      </div>
-    </section>
-
-    <section aria-labelledby="xp-h">
-      <p class="eyebrow">Experience</p>
-      <h2 class="h2" id="xp-h">Where I've worked</h2>
-      <div class="xp">
-        <div><span class="w">Now</span><b>Clinq Africa<small>AI Expert</small></b><span>Automating daily operational tasks with AI; also runs the company's social channels.</span></div>
-        <div><span class="w">Ongoing</span><b>RIELA Global<small>Software Engineer · remote</small></b><span>Building RIELA Connect with a team across Kenya, Ghana and Germany.</span></div>
-        <div><span class="w">Internship</span><b>PhotoMed<small>Intern</small></b><span>Built a request-tracking app in React and Vite.</span></div>
-        <div><span class="w">Internship</span><b>Tea'd App<small>Software Developer Intern</small></b><span>Shipped features on a live product, plus digital marketing.</span></div>
-        <div><span class="w">Internship</span><b>Calorica<small>Software Developer Intern</small></b><span>Production code and lessons about what breaks first.</span></div>
-        <div><span class="w">Internship</span><b>Stadia Capital<small>Investment Research Intern</small></b><span>Financial research on real deadlines.</span></div>
-      </div>
-      <div class="skills" aria-label="Skills">
-        <span>React Native</span><span>Expo</span><span>Flutter</span><span>React</span><span>TypeScript</span><span>Next.js</span><span>Nuxt / Vue</span><span>Tailwind</span><span>Python</span><span>FastAPI</span><span>Flask</span><span>Node.js</span><span>PostgreSQL</span><span>Supabase</span><span>Gemini Vision</span><span>LLM APIs</span><span>TensorFlow</span><span>scikit-learn</span><span>Git &amp; CI</span>
-      </div>
-    </section>
-
-    <section id="contact" aria-labelledby="ct-h">
-      <div class="contact">
-        <p class="eyebrow" style="color:#1A1406">Contact</p>
-        <h2 id="ct-h">Let's write the next chapter.</h2>
-        <p>Open to software engineering roles in fintech, AI/ML and product teams. Dean's List every semester and 7 semesters as Class Rep.</p>
-        <div class="btns" style="justify-content:flex-start">
-          <a class="btn dark" href="mailto:1valeriemwangi@gmail.com">1valeriemwangi@gmail.com</a>
-          <button class="btn" id="copy" type="button">Copy email</button>
-          <a class="btn" href="https://linkedin.com/in/valeriemwangi" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn" href="https://github.com/Kare100" target="_blank" rel="noopener">GitHub</a>
+<!-- =================== AFTER THE STORY =================== -->
+<div class="after" id="after">
+  <div class="wrap split">
+    <aside class="side" aria-label="About Valerie">
+      <div class="side-in">
+        <p class="eyebrow">The quick version</p>
+        <h2 class="side-name">Valerie Mwangi</h2>
+        <p class="side-role">Software engineer · Nairobi</p>
+        <p class="side-lead">I build AI-powered mobile and web products for problems I see around me: sick crops, credit without a bank history, and paperwork in the field.</p>
+        <nav class="toc" aria-label="Sections">
+          <a href="#work"><i></i>Projects</a>
+          <a href="#oss"><i></i>Open source</a>
+          <a href="#xp"><i></i>Experience</a>
+          <a href="#contact"><i></i>Contact</a>
+        </nav>
+        <div class="side-foot">
+          <div class="socials">
+            <a href="https://github.com/Kare100" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://linkedin.com/in/valeriemwangi" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:1valeriemwangi@gmail.com">Email</a>
+          </div>
+          <button class="kbd-hint" type="button" data-cmdk><kbd>⌘</kbd><kbd>K</kbd> jump anywhere</button>
+          <p class="status"><span class="dot"></span><span><span id="clock2">EAT</span> in Nairobi · open to roles</span></p>
         </div>
       </div>
-    </section>
-    <footer><span>© <span id="yr">2026</span> Valerie Mwangi · Nairobi</span><span>Illustrated &amp; hand-coded in SVG, CSS and JS.</span></footer>
+    </aside>
+
+    <div class="main-col">
+      <section id="work" aria-labelledby="work-h">
+        <div class="sec-h"><h2 id="work-h">Selected projects</h2><span>all code public on GitHub</span></div>
+        <p class="note" aria-hidden="true">start here
+          <svg viewBox="0 0 46 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6c14-2 26 6 30 24"/><path d="M27 25l7 7 4-10"/></svg>
+        </p>
+        <div class="bento">
+          <article class="tile t-full">
+            <div class="row">
+              <div class="art a-agri"><div class="mini-phone"><div></div></div></div>
+              <div class="bd"><span class="n">01 · capstone</span><h3>AgriSmart Kenya <span class="badge">Featured</span></h3>
+                <p>Bilingual English/Swahili app: farmers photograph a sick leaf and get a Gemini-powered diagnosis, treatment plan, market prices and weather advice. Photos are compressed for slow rural networks, AI output is matched to a structured disease table, and there's CI with unit and integration tests.</p>
+                <div class="tg"><span>React Native</span><span>Expo</span><span>Supabase</span><span>PostgreSQL</span><span>Gemini</span><span>Jest</span></div>
+                <div class="lk"><a href="https://github.com/Kare100/agrismart-kenya" target="_blank" rel="noopener">View code</a></div></div>
+            </div>
+          </article>
+          <article class="tile t-half">
+            <div class="art a-pesa"><div class="a-pesa-dial"><svg viewBox="0 0 120 66" aria-hidden="true"><path d="M10 60a50 50 0 0 1 100 0" stroke="#2B5B45" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M10 60a50 50 0 0 1 86-35" stroke="#7EE7A8" stroke-width="10" fill="none" stroke-linecap="round"/></svg><b>712</b></div></div>
+            <div class="bd"><span class="n">02 · fintech</span><h3>PesaScore</h3><p>Reads an M-Pesa statement and returns an explainable credit score (300–850) and a loan limit the person can afford, with the reasons in plain language.</p>
+              <div class="tg"><span>Java 21</span><span>REST API</span><span>Docker</span><span>GitHub Actions</span></div>
+              <div class="lk"><a href="https://github.com/Kare100/pesascore" target="_blank" rel="noopener">View code</a></div></div>
+          </article>
+          <article class="tile t-half">
+            <div class="art a-fundi"><div class="bars" aria-hidden="true"><i style="height:30%"></i><i style="height:62%"></i><i style="height:45%"></i><i style="height:88%"></i><i style="height:54%"></i><i style="height:76%"></i><i style="height:36%"></i><i style="height:92%"></i><i style="height:58%"></i><i style="height:70%"></i><i style="height:40%"></i><i style="height:84%"></i><i style="height:50%"></i><i style="height:66%"></i><i style="height:34%"></i><i style="height:78%"></i><i style="height:46%"></i><i style="height:60%"></i></div></div>
+            <div class="bd"><span class="n">03 · AI agent</span><h3>Fundi Notes</h3><p>Voice notes from field technicians become structured job reports with missing-info flags and a daily summary for managers.</p>
+              <div class="tg"><span>FastAPI</span><span>React</span><span>TypeScript</span><span>LLMs</span></div>
+              <div class="lk"><a href="https://github.com/Kare100/fundi-notes" target="_blank" rel="noopener">View code</a></div></div>
+          </article>
+          <article class="tile accent-amber">
+            <div class="bd"><span class="n">04 · PWA</span><h3>RIELA Connect</h3><p>Links farmers in Kenya and Ghana to grain drying, storage, bookings and prices.</p>
+              <div class="tg"><span>Next.js</span><span>TypeScript</span></div>
+              <div class="lk"><a href="https://riela-connect-1.vercel.app" target="_blank" rel="noopener">Live</a><a href="https://github.com/Kare100/riela-connect" target="_blank" rel="noopener">Code</a></div></div>
+          </article>
+          <article class="tile accent-teal">
+            <div class="bd"><span class="n">05 · marketplace</span><h3>SNDBX Experts</h3><p>Matches small businesses with advisors in four cities, with time-zone-aware booking and M-Pesa.</p>
+              <div class="tg"><span>Flask</span><span>pytest</span></div>
+              <div class="lk"><a href="https://github.com/Kare100/sndbx-experts" target="_blank" rel="noopener">Code</a></div></div>
+          </article>
+          <article class="tile accent-violet">
+            <div class="bd"><span class="n">06 · e-commerce</span><h3>Shaba Jewellery</h3><p>Editorial store with cart, checkout, a Postgres API and full SEO.</p>
+              <div class="tg"><span>Nuxt 3</span><span>Neon</span></div>
+              <div class="lk"><a href="https://shaba-jewellery.vercel.app" target="_blank" rel="noopener">Live</a><a href="https://github.com/Kare100/shaba-jewellery" target="_blank" rel="noopener">Code</a></div></div>
+          </article>
+          <a class="tile t-stat" href="#oss"><b>3</b><span>merged pull requests to the Hiero SDKs (Linux Foundation)</span></a>
+          <div class="tile t-stat"><b>Dean's List</b><span>every semester at USIU-Africa</span></div>
+          <div class="tile t-stat wide-sm"><b>7</b><span>semesters as Class Rep</span></div>
+        </div>
+      </section>
+
+      <section id="oss" aria-labelledby="oss-h">
+        <div class="sec-h"><h2 id="oss-h">Open source</h2><span>hiero-ledger</span></div>
+        <p class="sec-p">Contributions to the Hiero SDKs (Linux Foundation Decentralized Trust), each through maintainer code review.</p>
+        <ol class="gitlog">
+          <li class="head" aria-hidden="true">$ git log --author=Kare100 --oneline</li>
+          <li><span class="st rev">in review</span><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4790" target="_blank" rel="noopener">hiero-sdk-js #4790</a><p>Unit tests for GrpcStatus and nine other enum-style classes that had no coverage.</p></li>
+          <li><span class="st">merged</span><a href="https://github.com/hiero-ledger/hiero-sdk-python/pull/2795" target="_blank" rel="noopener">hiero-sdk-python #2795</a><p>Fixed the monthly link-check workflow so it only reports broken links when Lychee actually finds them.</p></li>
+          <li><span class="st">merged</span><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4767" target="_blank" rel="noopener">hiero-sdk-js #4767</a><p>Added unit tests for BadMnemonicError, which had no test coverage.</p></li>
+          <li><span class="st">merged</span><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4715" target="_blank" rel="noopener">hiero-sdk-js #4715</a><p>Removed four unused internal helpers, and moved one the build script still needed into the script.</p></li>
+        </ol>
+      </section>
+
+      <section id="xp" aria-labelledby="xp-h">
+        <div class="sec-h"><h2 id="xp-h">Experience</h2><span>Nairobi · remote</span></div>
+        <ol class="tl">
+          <li class="now"><span class="w">Now</span><b>Clinq Africa<small>AI Expert</small></b><p>Automating daily operational tasks with AI; also runs the company's social channels.</p></li>
+          <li class="now"><span class="w">Ongoing</span><b>RIELA Global<small>Software Engineer · remote</small></b><p>Building RIELA Connect with a team across Kenya, Ghana and Germany.</p></li>
+          <li><span class="w">Internship</span><b>PhotoMed<small>Intern</small></b><p>Built a request-tracking app in React and Vite.</p></li>
+          <li><span class="w">Internship</span><b>Tea'd App<small>Software Developer Intern</small></b><p>Shipped features on a live product, plus digital marketing.</p></li>
+          <li><span class="w">Internship</span><b>Calorica<small>Software Developer Intern</small></b><p>Production code and lessons about what breaks first.</p></li>
+          <li><span class="w">Internship</span><b>Stadia Capital<small>Investment Research Intern</small></b><p>Financial research on real deadlines.</p></li>
+        </ol>
+        <div class="skillset" aria-label="Skills">
+          <div><h3>Mobile</h3><p>React Native · Expo · Flutter</p></div>
+          <div><h3>Web</h3><p>React · TypeScript · Next.js · Nuxt / Vue · Tailwind</p></div>
+          <div><h3>Backend</h3><p>Python · FastAPI · Flask · Java · Node.js · PostgreSQL · Supabase</p></div>
+          <div><h3>AI / ML</h3><p>Gemini Vision · LLM APIs · TensorFlow · scikit-learn</p></div>
+          <div><h3>Tooling</h3><p>Git · GitHub Actions · Docker · Jest · pytest</p></div>
+        </div>
+      </section>
+
+      <section id="contact" aria-labelledby="ct-h">
+        <div class="contact">
+          <p class="eyebrow" style="color:#1A1406">Contact</p>
+          <h2 id="ct-h">Let's write the next chapter.</h2>
+          <p>Open to software engineering roles in fintech, AI/ML and product teams. Dean's List every semester and 7 semesters as Class Rep.</p>
+          <div class="btns" style="justify-content:flex-start">
+            <a class="btn dark" href="mailto:1valeriemwangi@gmail.com">1valeriemwangi@gmail.com</a>
+            <button class="btn" id="copy" type="button">Copy email</button>
+            <a class="btn" href="https://linkedin.com/in/valeriemwangi" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn" href="https://github.com/Kare100" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </section>
+      <footer><span>© <span id="yr">2026</span> Valerie Mwangi · Nairobi</span><span>Illustrated &amp; hand-coded in SVG, CSS and JS · press <kbd>⌘</kbd><kbd>K</kbd></span></footer>
+    </div>
   </div>
 </div>
 </main>
+
+<div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Command menu">
+  <div class="cmdk-box">
+    <div class="cmdk-in"><span class="cmdk-p">valerie@nairobi ~ $</span><input id="cmdkIn" type="text" placeholder="type a command…" autocomplete="off" spellcheck="false" aria-label="Search commands" aria-controls="cmdkList"></div>
+    <ul id="cmdkList" role="listbox" aria-label="Commands"></ul>
+    <div class="cmdk-ft"><span>↑↓ move</span><span>↵ open</span><span>esc close</span></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -594,7 +754,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8p
   function isMobile() { return innerWidth <= 760; }
 
   /* clocks */
-  function tick() { try { var t = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Nairobi' }).format(new Date()) + ' EAT'; $('clock').textContent = t; $('osClock').textContent = t; } catch (e) {} }
+  function tick() { try { var t = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Nairobi' }).format(new Date()) + ' EAT'; $('clock').textContent = t; $('osClock').textContent = t; if ($('clock2')) $('clock2').textContent = t; } catch (e) {} }
   tick(); setInterval(tick, 30000);
 
   /* helpers */
@@ -801,6 +961,101 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8p
     function show(m) { toast.textContent = m; toast.classList.add('show'); setTimeout(function () { toast.classList.remove('show'); }, 1800); }
     if (navigator.clipboard) navigator.clipboard.writeText(em).then(function () { show('Email copied ✓'); }, function () { show(em); }); else show(em);
   });
+
+  /* scroll helper */
+  function goTo(id) {
+    var t = id === 'top' ? null : $(id);
+    scrollTo({ top: t ? t.getBoundingClientRect().top + scrollY - 20 : 0, behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  /* frosted header once past the story */
+  var topBar = document.querySelector('.top');
+  function solidTop() { var a = $('after'); if (a && topBar) topBar.classList.toggle('solid', a.getBoundingClientRect().top < 70); }
+  addEventListener('scroll', solidTop, { passive: true }); solidTop();
+
+  /* active section in the side menu */
+  var tocLinks = [].slice.call(document.querySelectorAll('.toc a'));
+  if ('IntersectionObserver' in window && tocLinks.length) {
+    var spy = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        tocLinks.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    ['work', 'oss', 'xp', 'contact'].forEach(function (id) { var s = $(id); if (s) spy.observe(s); });
+  }
+
+  /* soft spotlight that follows the cursor (mouse only, off for reduced motion) */
+  var after = $('after');
+  if (after && !reduce && matchMedia('(pointer: fine)').matches) {
+    after.addEventListener('pointermove', function (e) {
+      var r = after.getBoundingClientRect();
+      after.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      after.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    after.addEventListener('pointerleave', function () { after.style.setProperty('--mx', '-999px'); });
+  }
+
+  /* command menu */
+  var cmdk = $('cmdk'), cIn = $('cmdkIn'), cList = $('cmdkList'), lastFocus = null, sel = 0, shown = [];
+  function copyEmail() { $('copy').click(); }
+  function open(u) { window.open(u, '_blank', 'noopener'); }
+  var cmds = [
+    { t: 'projects', d: 'Selected projects', k: 'work bento', run: function () { goTo('work'); } },
+    { t: 'open-source', d: 'Hiero pull requests', k: 'oss hiero prs git', run: function () { goTo('oss'); } },
+    { t: 'experience', d: 'Where I’ve worked', k: 'xp jobs internships skills', run: function () { goTo('xp'); } },
+    { t: 'contact', d: 'Get in touch', k: 'hire email', run: function () { goTo('contact'); } },
+    { t: 'story', d: 'Replay the story from the top', k: 'top start home', run: function () { goTo('top'); } },
+    { t: 'copy-email', d: '1valeriemwangi@gmail.com', k: 'email mail', run: copyEmail },
+    { t: 'email', d: 'Write me an email', k: 'mail contact', run: function () { location.href = 'mailto:1valeriemwangi@gmail.com'; } },
+    { t: 'github', d: 'github.com/Kare100', k: 'code repos', run: function () { open('https://github.com/Kare100'); } },
+    { t: 'linkedin', d: 'linkedin.com/in/valeriemwangi', k: 'connect', run: function () { open('https://linkedin.com/in/valeriemwangi'); } },
+    { t: 'agrismart', d: 'AgriSmart Kenya code', k: 'project farm crop', run: function () { open('https://github.com/Kare100/agrismart-kenya'); } },
+    { t: 'pesascore', d: 'PesaScore code', k: 'project fintech mpesa credit', run: function () { open('https://github.com/Kare100/pesascore'); } },
+    { t: 'fundi-notes', d: 'Fundi Notes code', k: 'project ai voice', run: function () { open('https://github.com/Kare100/fundi-notes'); } },
+    { t: 'riela', d: 'RIELA Connect live demo', k: 'project pwa', run: function () { open('https://riela-connect-1.vercel.app'); } },
+    { t: 'sndbx', d: 'SNDBX Experts code', k: 'project marketplace', run: function () { open('https://github.com/Kare100/sndbx-experts'); } },
+    { t: 'shaba', d: 'Shaba Jewellery live store', k: 'project ecommerce shop', run: function () { open('https://shaba-jewellery.vercel.app'); } }
+  ];
+  function paint() {
+    var q = cIn.value.trim().toLowerCase();
+    shown = cmds.filter(function (c) { return !q || (c.t + ' ' + c.d + ' ' + c.k).toLowerCase().indexOf(q) > -1; });
+    sel = Math.min(sel, Math.max(shown.length - 1, 0));
+    cList.innerHTML = '';
+    if (!shown.length) { var e = document.createElement('li'); e.className = 'empty'; e.textContent = 'command not found: ' + q; cList.appendChild(e); return; }
+    shown.forEach(function (c, i) {
+      var li = document.createElement('li');
+      li.setAttribute('role', 'option'); li.id = 'cmd-' + i;
+      li.setAttribute('aria-selected', i === sel ? 'true' : 'false');
+      if (i === sel) li.className = 'sel';
+      var a = document.createElement('span'); a.textContent = c.t;
+      var b = document.createElement('small'); b.textContent = c.d;
+      li.appendChild(a); li.appendChild(b);
+      li.addEventListener('mousemove', function () { if (sel !== i) { sel = i; paint(); } });
+      li.addEventListener('click', function () { run(i); });
+      cList.appendChild(li);
+    });
+    cIn.setAttribute('aria-activedescendant', 'cmd-' + sel);
+    var s = cList.children[sel]; if (s && s.scrollIntoView) s.scrollIntoView({ block: 'nearest' });
+  }
+  function openCmdk() { if (!cmdk.hidden) return; lastFocus = document.activeElement; cmdk.hidden = false; cIn.value = ''; sel = 0; paint(); cIn.focus(); }
+  function closeCmdk() { if (cmdk.hidden) return; cmdk.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function run(i) { var c = shown[i]; if (!c) return; closeCmdk(); c.run(); }
+  cIn.addEventListener('input', function () { sel = 0; paint(); });
+  cIn.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); sel = (sel + 1) % Math.max(shown.length, 1); paint(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); sel = (sel - 1 + shown.length) % Math.max(shown.length, 1); paint(); }
+    else if (e.key === 'Enter') { e.preventDefault(); run(sel); }
+    else if (e.key === 'Tab') { e.preventDefault(); }
+  });
+  cmdk.addEventListener('mousedown', function (e) { if (e.target === cmdk) closeCmdk(); });
+  document.addEventListener('keydown', function (e) {
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable;
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); cmdk.hidden ? openCmdk() : closeCmdk(); }
+    else if (e.key === '/' && !typing && cmdk.hidden) { e.preventDefault(); openCmdk(); }
+    else if (e.key === 'Escape') closeCmdk();
+  });
+  [].slice.call(document.querySelectorAll('[data-cmdk]')).forEach(function (b) { b.addEventListener('click', openCmdk); });
 
   /* smooth anchor for #work etc */
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
