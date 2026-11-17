@@ -86,10 +86,10 @@
   function build() {
     root = el('div', 'vos'); root.id = 'vos'; root.hidden = true;
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', 'ValerieOS, an interactive desktop');
-    desk = el('div', 'vo-desk', WALL);
+    desk = el('div', 'vo-desk', WALL + '<div class="vo-teal" aria-hidden="true"><div class="wm">' + I.logo + '<b>ValerieOS<sup>98</sup></b></div></div>');
     var icons = el('div', 'vo-icons');
-    [['welcome', 'Welcome', 'doc'], ['projects', 'Projects', 'folder'], ['about', 'about.txt', 'doc'], ['oss', 'Open source', 'git'],
-     ['xp', 'Experience', 'briefcase'], ['terminal', 'Terminal', 'term'], ['mail', 'Mail', 'mail'], ['bin', 'Recycle Bin', 'bin']].forEach(function (d) {
+    [['welcome', 'My Home Page', 'globe'], ['projects', 'My Projects', 'folder'], ['about', 'about.txt', 'doc'], ['oss', 'Open source', 'git'],
+     ['xp', 'Experience', 'briefcase'], ['terminal', 'MS-DOS Prompt', 'term'], ['mail', 'Mail', 'mail'], ['bin', 'Recycle Bin', 'bin']].forEach(function (d) {
       var b = el('button', 'vo-icon', I[d[2]] + '<span>' + d[1] + '</span>'); b.type = 'button';
       b.addEventListener('click', function () { selectIcon(b); if (phone() || b.dataset.armed) { open(d[0]); b.dataset.armed = ''; } else { b.dataset.armed = '1'; setTimeout(function () { b.dataset.armed = ''; }, 450); } });
       b.addEventListener('dblclick', function () { open(d[0]); });
@@ -97,7 +97,7 @@
       icons.appendChild(b);
     });
     desk.appendChild(icons);
-    desk.appendChild(el('div', 'vo-hint', 'Double-click an icon to open it.<br>Try the Terminal ✦<br>Drag windows by their title bar.'));
+    
     desk.addEventListener('pointerdown', function (e) { if (e.target === desk || e.target.closest('.vo-wall')) { selectIcon(null); closeMenu(); } });
 
     var bar = el('div', 'vo-bar');
@@ -112,15 +112,15 @@
     menu = el('div', 'vo-menu'); menu.hidden = true;
     var ul = el('ul');
     [['welcome', 'Welcome', 'doc'], ['projects', 'Projects', 'folder'], ['oss', 'Open source', 'git'], ['xp', 'Experience', 'briefcase'], ['terminal', 'Terminal', 'term'], ['mail', 'Mail', 'mail'], ['-'],
-     ['night', 'Switch to night', 'moon'], ['exit', 'Back to the story', 'power']].forEach(function (m) {
+     ['night', 'Nairobi wallpaper', 'globe'], ['exit', 'Back to the story', 'power']].forEach(function (m) {
       if (m[0] === '-') { ul.appendChild(el('li', '', '<hr>')); return; }
       var li = el('li'), b = el('button', '', I[m[2]] + '<span>' + m[1] + '</span>'); b.type = 'button';
       b.addEventListener('click', function () { closeMenu(); if (m[0] === 'exit') shut(); else if (m[0] === 'night') toggleNight(b); else open(m[0]); });
       li.appendChild(b); ul.appendChild(li);
     });
-    menu.appendChild(el('div', 'side', '<span>ValerieOS</span>')); menu.appendChild(ul);
+    menu.appendChild(el('div', 'side', '<span><b>Valerie</b>OS 98</span>')); menu.appendChild(ul);
 
-    root.appendChild(desk); root.appendChild(bar); root.appendChild(menu);
+    root.appendChild(desk); root.appendChild(bar); root.appendChild(menu); root.appendChild(el('div', 'vo-crt'));
     document.body.appendChild(root);
     root.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') { if (!menu.hidden) closeMenu(); else { var f = focused(); if (f) close(f.id); else shut(); } e.stopPropagation(); }
@@ -129,7 +129,7 @@
   function selectIcon(b) { [].forEach.call(root.querySelectorAll('.vo-icon.sel'), function (x) { x.classList.remove('sel'); }); if (b) b.classList.add('sel'); }
   function openMenu() { menu.hidden = false; startBtn.setAttribute('aria-expanded', 'true'); var f = menu.querySelector('button'); if (f) f.focus(); }
   function closeMenu() { if (!menu) return; menu.hidden = true; startBtn.setAttribute('aria-expanded', 'false'); }
-  function toggleNight(b) { var n = root.classList.toggle('night'); b.querySelector('span').textContent = n ? 'Switch to sunrise' : 'Switch to night'; b.innerHTML = (n ? I.power.replace('#F2603F', '#FFB547') : I.moon) + '<span>' + (n ? 'Switch to sunrise' : 'Switch to night') + '</span>'; }
+  function toggleNight(b) { var n = root.classList.toggle('skyline'); b.querySelector('span').textContent = n ? 'Classic wallpaper' : 'Nairobi wallpaper'; }
 
   /* ---------- window manager ---------- */
   function focused() { var best = null; Object.keys(wins).forEach(function (k) { var w = wins[k]; if (!w.el.classList.contains('min') && (!best || +w.el.style.zIndex > +best.el.style.zIndex)) best = w; }); return best; }
@@ -145,10 +145,10 @@
     var W = Math.min(o.w || 560, innerWidth - 30), H = Math.min(o.h || 420, innerHeight - 90);
     var x = o.x != null ? o.x : Math.max(10, (innerWidth - W) / 2 + (cascade % 5) * 26 - 40), y = o.y != null ? o.y : Math.max(10, (innerHeight - 46 - H) / 2 + (cascade % 5) * 22 - 30);
     cascade++;
-    var w = el('section', 'vo-win' + (reduce ? '' : ' pop')); w.setAttribute('aria-label', title);
+    var w = el('section', 'window vo-win' + (reduce ? '' : ' pop')); w.setAttribute('aria-label', title);
     w.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + W + 'px;height:' + H + 'px';
-    var tb = el('div', 'vo-tb', '<button type="button" class="cl" aria-label="Close ' + esc(title) + '">✕</button><span class="t">' + esc(title) + '</span><button type="button" class="mn" aria-label="Minimise">–</button><button type="button" class="mx" aria-label="Maximise">□</button>');
-    var bd = el('div', 'vo-body'); if (typeof body === 'string') bd.innerHTML = body; else bd.appendChild(body);
+    var tb = el('div', 'title-bar vo-tb', '<div class="title-bar-text">' + (o.icon ? I[o.icon] : '') + esc(title) + '</div><div class="title-bar-controls"><button type="button" class="mn" aria-label="Minimize"></button><button type="button" class="mx" aria-label="Maximize"></button><button type="button" class="cl" aria-label="Close"></button></div>');
+    var bd = el('div', 'window-body vo-body'); if (typeof body === 'string') bd.innerHTML = body; else bd.appendChild(body);
     var rs = el('div', 'vo-rs');
     w.appendChild(tb); w.appendChild(bd); w.appendChild(rs);
     desk.appendChild(w);
@@ -187,10 +187,10 @@
   }
   var apps = {
     welcome: function () {
-      var b = el('div', 'vo-welcome', '<h1>Valerie Mwangi</h1><h2>Software Engineer · Nairobi</h2><p>I build AI-powered mobile and web products for farmers, for people with no bank history, and for technicians in the field. Welcome to my laptop. Have a look around.</p>');
+      var b = el('div', 'vo-welcome', '<h1>Valerie Mwangi</h1><h2>Software Engineer</h2><p>I build AI-powered mobile and web products for farmers, for people with no bank history, and for technicians in the field. Welcome to my computer. Have a look around.</p>');
       b.appendChild(nav([['About', 'about'], ['Projects', 'projects'], ['Open source', 'oss'], ['Experience', 'xp'], ['Contact', 'mail']]));
-      b.appendChild(el('p', 'tip', 'tip: open the Terminal and type <b>help</b>'));
-      makeWin('welcome', 'Welcome — Valerie Mwangi', b, { w: 640, h: 470 });
+      b.appendChild(el('p', 'tip', 'Best viewed with ValerieOS 98 at 800×600 · tip: open the MS-DOS Prompt and type <b>help</b>'));
+      makeWin('welcome', 'Valerie Mwangi - Home', b, { w: 660, h: 470, icon: 'globe' });
     },
     projects: function () {
       var b = el('div'); b.appendChild(el('div', 'vo-path', 'C:\\Valerie\\Projects <span style="margin-left:auto">6 items</span>'));
@@ -200,34 +200,34 @@
         ic.addEventListener('click', function () { openProject(p.id); }); g.appendChild(ic);
       });
       b.appendChild(g);
-      makeWin('projects', 'Projects', b, { w: 600, h: 380 });
+      makeWin('projects', 'C:\\Valerie\\Projects', b, { w: 600, h: 380, icon: 'folder' });
     },
     about: function () {
-      makeWin('about', 'about.txt', '<div class="vo-doc mono">Hi, I\'m Valerie.\n\nI started Financial Engineering at Strathmore in 2021: maths, markets, models. A year in, I couldn\'t picture doing it forever.\n\nIn Fall 2023 I changed one word. Financial Engineering became Software Engineering at USIU-Africa, and I haven\'t stopped building since.\n\n— Dean\'s List every semester\n— 7 semesters as Class Rep\n— AI Expert at Clinq Africa\n— 3 merged pull requests to the Hiero SDKs\n\nI like software that works in real conditions: cheap phones, slow networks, Kiswahili as well as English.\n\nOpen to software engineering roles in fintech, AI/ML and product teams, in Nairobi or remote.</div>', { w: 520, h: 460 });
+      makeWin('about', 'about.txt - Notepad', '<div class="vo-doc mono">Hi, I\'m Valerie.\n\nI started Financial Engineering at Strathmore in 2021: maths, markets, models. A year in, I couldn\'t picture doing it forever.\n\nIn Fall 2023 I changed one word. Financial Engineering became Software Engineering at USIU-Africa, and I haven\'t stopped building since.\n\n— Dean\'s List every semester\n— 7 semesters as Class Rep\n— AI Expert at Clinq Africa\n— 3 merged pull requests to the Hiero SDKs\n\nI like software that works in real conditions: cheap phones, slow networks, Kiswahili as well as English.\n\nOpen to software engineering roles in fintech, AI/ML and product teams, in Nairobi or remote.</div>', { w: 520, h: 460, icon: 'doc' });
     },
     oss: function () {
       var h = '<div class="vo-git"><div class="d">$ git log --author=Kare100 --org=hiero-ledger</div>';
       PRS.forEach(function (p) { h += '<div class="c"><span class="h">' + p.r + '</span> <a href="https://github.com/hiero-ledger/' + p.r + '/pull/' + p.n + '" target="_blank" rel="noopener">#' + p.n + '</a> <span class="' + (p.s === 'merged' ? 'm' : 'r') + '">[' + p.s + ']</span><br><span class="d">' + esc(p.t) + '</span></div>'; });
       h += '<div class="c m">3 merged · 1 in review · Linux Foundation Decentralized Trust</div></div>';
-      makeWin('oss', 'Open source — git log', h, { w: 560, h: 400 });
+      makeWin('oss', 'Open source - git log', h, { w: 560, h: 400, icon: 'git' });
     },
     xp: function () {
       var h = '<div class="vo-doc"><h3>Experience</h3><p style="color:#6B6F80">BSc Software Engineering, USIU-Africa · Dean\'s List every semester</p><h4>Work</h4>';
       JOBS.forEach(function (j) { h += '<div class="job"><b>' + esc(j[0]) + ' <em>' + esc(j[1]) + '</em></b><span>' + esc(j[2]) + '</span><p>' + esc(j[3]) + '</p></div>'; });
       h += '<h4>Skills</h4><p>React Native · Expo · Flutter · React · TypeScript · Next.js · Nuxt / Vue · Tailwind · Python · FastAPI · Flask · Java · Node.js · PostgreSQL · Supabase · Gemini Vision · LLM APIs · TensorFlow · scikit-learn · Git · GitHub Actions · Docker</p></div>';
-      makeWin('xp', 'Experience.doc', h, { w: 580, h: 480 });
+      makeWin('xp', 'Experience.doc - WordPad', h, { w: 580, h: 480, icon: 'briefcase' });
     },
     mail: function () {
-      var f = el('form', 'vo-mail', '<label>To<span class="to">' + EMAIL + '</span></label><label>Subject<input name="s" value="Hello from your portfolio"></label><textarea name="m" aria-label="Message" placeholder="Hi Valerie, ..."></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="vo-btn dark" type="submit">Send with my email app ↗</button><button class="vo-btn" type="button" data-copy>Copy address</button></div>');
+      var f = el('form', 'vo-mail', '<label>To<span class="to">' + EMAIL + '</span></label><label>Subject<input name="s" value="Hello from your portfolio"></label><textarea name="m" aria-label="Message" placeholder="Hi Valerie, ..."></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="submit">Send with my email app ↗</button><button type="button" data-copy>Copy address</button></div>');
       f.addEventListener('submit', function (e) { e.preventDefault(); location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(f.s.value) + '&body=' + encodeURIComponent(f.m.value); });
       f.querySelector('[data-copy]').addEventListener('click', function (e) { var b = e.target; if (navigator.clipboard) navigator.clipboard.writeText(EMAIL).then(function () { b.textContent = 'Copied ✓'; }); });
-      makeWin('mail', 'New message', f, { w: 520, h: 380 });
+      makeWin('mail', 'New Message', f, { w: 520, h: 380, icon: 'mail' });
     },
     bin: function () {
-      var b = el('div', 'vo-bin', '<div class="file">' + I.doc + '<div><b>financial-engineering.degree</b><small>Deleted Fall 2023 · from C:\\Strathmore</small></div></div><div class="msg">Restore this file?</div><div class="acts"><button class="vo-btn" type="button" data-a="1">No thanks</button><button class="vo-btn dark" type="button" data-a="2">Definitely not</button></div>');
+      var b = el('div', 'vo-bin', '<div class="file">' + I.doc + '<div><b>financial-engineering.degree</b><small>Deleted Fall 2023 · from C:\\Strathmore</small></div></div><div class="msg">Restore this file?</div><div class="acts"><button type="button" data-a="1">No thanks</button><button type="button" data-a="2">Definitely not</button></div>');
       var msg = b.querySelector('.msg');
       [].forEach.call(b.querySelectorAll('[data-a]'), function (x) { x.addEventListener('click', function () { msg.textContent = x.dataset.a === '1' ? 'Good call. Software Engineering suits you better.' : 'Same second word, much better fit. ✦'; }); });
-      makeWin('bin', 'Recycle Bin', b, { w: 440, h: 270 });
+      makeWin('bin', 'Recycle Bin', b, { w: 440, h: 270, icon: 'bin' });
     },
     terminal: function () { terminal(); }
   };
@@ -240,29 +240,29 @@
     b.appendChild(hero);
     var acts = '<div class="acts">' + (p.live ? '<a class="vo-btn dark" href="' + p.live + '" target="_blank" rel="noopener">Open live ↗</a>' : '') + '<a class="vo-btn' + (p.live ? '' : ' dark') + '" href="' + p.code + '" target="_blank" rel="noopener">View code ↗</a></div>';
     b.appendChild(el('div', 'txt', '<h3>' + esc(p.name) + '<em>' + esc(p.kind) + '</em></h3><p>' + esc(p.desc) + '</p><div class="tags">' + p.tags.map(function (t) { return '<i>' + esc(t) + '</i>'; }).join('') + '</div>' + acts));
-    makeWin('p-' + id, p.name, b, { w: 600, h: 540 });
+    makeWin('p-' + id, p.name, b, { w: 600, h: 540, icon: p.icon });
   }
   function open(id) { closeMenu(); if (apps[id]) apps[id](); else if (id.indexOf('p-') === 0) openProject(id.slice(2)); }
 
   /* ---------- terminal ---------- */
   function terminal() {
     var t = el('div', 'vo-term');
-    var out = el('div'), row = el('div', 'row', '<span class="p">valerie@nairobi ~ $</span>'), inp = el('input');
+    var out = el('div'), row = el('div', 'row', '<span class="p">C:\\VALERIE&gt;</span>'), inp = el('input');
     inp.setAttribute('aria-label', 'Terminal command'); inp.autocomplete = 'off'; inp.spellcheck = false;
     row.appendChild(inp); t.appendChild(out); t.appendChild(row);
     t.addEventListener('click', function () { inp.focus(); });
     var hist = [], hi = 0;
     function print(h, cls) { out.appendChild(el('div', 'ln' + (cls ? ' ' + cls : ''), h)); t.parentNode && (t.parentNode.scrollTop = 1e9); }
-    print('ValerieOS terminal · type <b>help</b> to see what I can do', 'dim');
+    print('ValerieOS 98 [Version 4.10.1998]\n(C) Valerie Mwangi, Nairobi.\n\nType <b>help</b> to see what I can do.', 'dim');
     var cmds = {
-      help: function () { print('whoami      who is Valerie\nls          list projects\nopen &lt;name&gt; open a project (e.g. open pesascore)\nprs         open-source pull requests\nexperience  where I\'ve worked\nstack       tools I use\ncontact     how to reach me\nnight       toggle night mode\nclear       clear the screen\nexit        back to the story'); },
+      help: function () { print('whoami      who is Valerie\nls          list projects\nopen &lt;name&gt; open a project (e.g. open pesascore)\nprs         open-source pull requests\nexperience  where I\'ve worked\nstack       tools I use\ncontact     how to reach me\nwallpaper   switch the desktop wallpaper\nclear       clear the screen\nexit        back to the story'); },
       whoami: function () { print('Valerie Mwangi · Software Engineer · Nairobi, Kenya\nBSc Software Engineering, USIU-Africa · Dean\'s List every semester\nCurrently: AI Expert at Clinq Africa', 'ok'); },
       ls: function () { print(PROJECTS.map(function (p) { return p.id.padEnd(11) + ' ' + p.name + ' · ' + p.kind; }).join('\n')); },
       prs: function () { print(PRS.map(function (p) { return (p.s === 'merged' ? '✔ ' : '… ') + p.r + ' #' + p.n + '  ' + p.t; }).join('\n')); },
       experience: function () { print(JOBS.map(function (j) { return j[2].padEnd(11) + j[0] + ', ' + j[1]; }).join('\n')); },
       stack: function () { print('mobile   React Native, Expo, Flutter\nweb      React, TypeScript, Next.js, Nuxt, Tailwind\nbackend  Python, FastAPI, Flask, Java, Node.js, PostgreSQL, Supabase\nai/ml    Gemini Vision, LLM APIs, TensorFlow, scikit-learn'); },
       contact: function () { print('email     <a href="mailto:' + EMAIL + '">' + EMAIL + '</a>\nlinkedin  <a href="https://linkedin.com/in/valeriemwangi" target="_blank" rel="noopener">linkedin.com/in/valeriemwangi</a>\ngithub    <a href="https://github.com/Kare100" target="_blank" rel="noopener">github.com/Kare100</a>'); },
-      night: function () { root.classList.toggle('night'); print('wallpaper: ' + (root.classList.contains('night') ? 'night' : 'sunrise'), 'dim'); },
+      wallpaper: function () { root.classList.toggle('skyline'); print('wallpaper: ' + (root.classList.contains('skyline') ? 'Nairobi sunrise' : 'classic teal'), 'dim'); },
       clear: function () { out.innerHTML = ''; },
       exit: function () { shut(); },
       sudo: function (a) { if (/hire/.test(a)) { print('Permission granted ✦ Opening a message to Valerie…', 'ok'); setTimeout(function () { open('mail'); }, 600); } else print('sudo: try "sudo hire-valerie"', 'er'); },
@@ -273,20 +273,20 @@
       if (e.key === 'ArrowDown') { e.preventDefault(); if (hi < hist.length) inp.value = hist[++hi] || ''; return; }
       if (e.key === 'Tab') { e.preventDefault(); var v = inp.value.trim(), m = Object.keys(cmds).concat(PROJECTS.map(function (p) { return 'open ' + p.id; })).filter(function (c) { return c.indexOf(v) === 0; }); if (m.length === 1) inp.value = m[0]; return; }
       if (e.key !== 'Enter') return;
-      var line = inp.value.trim(); inp.value = ''; print('<span class="p">valerie@nairobi ~ $</span> ' + esc(line));
+      var line = inp.value.trim(); inp.value = ''; print('<span class="p">C:\\VALERIE&gt;</span> ' + esc(line));
       if (!line) return; hist.push(line); hi = hist.length;
       var parts = line.split(/\s+/), c = parts[0].toLowerCase(), arg = parts.slice(1).join(' ').toLowerCase();
       if (c === 'open' || c === 'cd') { var p = PROJECTS.filter(function (x) { return x.id.indexOf(arg) === 0 || x.name.toLowerCase().indexOf(arg) === 0; })[0]; if (p) { print('opening ' + p.name + '…', 'ok'); openProject(p.id); } else if (apps[arg]) open(arg); else print('no project called "' + esc(arg) + '". Try ls', 'er'); return; }
       if (cmds[c]) cmds[c](arg); else print('command not found: ' + esc(c) + '. Type help', 'er');
     });
-    makeWin('terminal', 'Terminal', t, { w: 600, h: 380 });
+    makeWin('terminal', 'MS-DOS Prompt', t, { w: 600, h: 380, icon: 'term' });
   }
 
   /* ---------- boot / open / shut ---------- */
   function boot(done) {
-    var b = el('div', 'vo-boot', '<div class="in"><div class="logo">' + I.logo + 'ValerieOS</div></div>');
+    var b = el('div', 'vo-boot', '<div class="in"><div class="logo">' + I.logo + '<span>ValerieBIOS v1.0 · Nairobi</span></div></div>');
     var inEl = b.querySelector('.in');
-    var lines = ['Waking up in Nairobi… <b>06:00 EAT</b>', 'Loading memories from Strathmore… <b>done</b>', 'Switching degree: Financial → Software… <b>done</b>', 'Brewing coffee… <b>☕</b>', 'Mounting projects (6)… <b>done</b>'];
+    var lines = ['Memory test: 640K <b>OK</b>', 'Detecting degree… Financial Engineering <b>[REMOVED]</b>', 'Detecting degree… Software Engineering, USIU-Africa <b>OK</b>', 'Brewing coffee… <b>OK</b>', 'Mounting C:\\VALERIE\\PROJECTS… 6 found <b>OK</b>', 'Starting ValerieOS 98…'];
     var ps = lines.map(function (l) { var p = el('p', '', l); inEl.appendChild(p); return p; });
     var pb = el('div', 'pb', '<i></i>'); inEl.appendChild(pb); inEl.appendChild(el('small', '', 'click anywhere to skip'));
     root.appendChild(b);
@@ -309,11 +309,11 @@
   function shut() {
     if (!root || root.hidden) return;
     closeMenu();
-    function hide() { root.hidden = true; root.classList.remove('closing'); document.documentElement.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); }
+    function hide() { if (window.ValerieOS.onClose) window.ValerieOS.onClose(); root.hidden = true; root.classList.remove('closing'); document.documentElement.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); }
     if (reduce) hide(); else { root.classList.add('closing'); setTimeout(hide, 380); }
   }
 
-  window.ValerieOS = { open: launch, close: shut };
-  [].forEach.call(document.querySelectorAll('[data-vos]'), function (b) { b.addEventListener('click', function (e) { e.preventDefault(); launch(); }); });
-  if (location.hash === '#os') launch();
+  window.ValerieOS = { open: launch, close: shut, onClose: null };
+  [].forEach.call(document.querySelectorAll('[data-vos]'), function (b) { b.addEventListener('click', function (e) { e.preventDefault(); if (b.getAttribute('data-vos') !== 'direct' && window.ValerieRoom && window.ValerieRoom.enter) window.ValerieRoom.enter(); else launch(); }); });
+  if (location.hash === '#os' && !document.getElementById('room')) launch();
 })();

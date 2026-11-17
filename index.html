@@ -368,6 +368,7 @@ button { font: inherit; color: inherit; }
   .cap, .win, .role { transition: none; }
 }
 </style>
+<link rel="stylesheet" href="vendor/98/98-scoped.css">
 <link rel="stylesheet" href="os.css">
 </head>
 <body>
@@ -660,7 +661,7 @@ button { font: inherit; color: inherit; }
     <div class="cap" data-s="1"><p class="k">Chapter 1 · 2021</p><h2>The sensible degree.</h2><p>I started Financial Engineering at Strathmore: maths, markets, models. Safe, respectable, and I was good at it.</p></div>
     <div class="cap" data-s="2"><p class="k">Chapter 2 · 2022</p><h2>The wobble.</h2><p>A year in, I couldn't picture doing it for the rest of my life. Admitting that, when everyone thinks you chose well, is hard.</p></div>
     <div class="cap" data-s="3"><p class="k">Chapter 3 · Fall 2023</p><h2>I changed one word.</h2><p>Financial Engineering became Software Engineering at USIU-Africa. Same second word, much better fit. Dean's List every semester since.</p></div>
-    <div class="cap" data-s="4"><p class="k">Chapter 4 · Since</p><h2>Then I couldn't stop building.</h2><p>Six projects, each solving a real problem for real people. Click any window to open the code, or step inside.</p><button class="use-laptop" type="button" data-vos>Use my laptop <span class="k">ValerieOS</span></button></div>
+    <div class="cap" data-s="4"><p class="k">Chapter 4 · Since</p><h2>Then I couldn't stop building.</h2><p>Six projects, each solving a real problem for real people. Click any window to open the code, or step inside.</p><button class="use-laptop" type="button" data-vos="direct">Use my laptop <span class="k">ValerieOS</span></button></div>
     <div class="cap" data-s="5"><p class="k">Chapter 5 · The world</p><h2>Shipping with real teams.</h2><p>From Nairobi to Accra, Berlin, Addis Ababa and Atlanta: internships, an AI role and a three-time-zone collaboration.</p></div>
 
     <ol class="rail" id="rail" aria-label="Story chapters">
@@ -675,6 +676,18 @@ button { font: inherit; color: inherit; }
     <div class="bar" id="bar"></div>
   </div>
 </div>
+
+<!-- =================== CHAPTER 6: THE DESK (3D) =================== -->
+<section class="room" id="room" aria-label="Valerie's desk in 3D. Click the computer monitor to use ValerieOS.">
+  <canvas id="roomCanvas" aria-hidden="true"></canvas>
+  <div class="room-ui">
+    <p class="k">Chapter 6 · My desk</p>
+    <h2>Come in.<br>The computer's on.</h2>
+    <p>Move around to look. Click the monitor to use it.</p>
+    <button class="use-laptop" type="button" data-vos>Use the computer ▸</button>
+  </div>
+  <div class="room-hint" id="roomHint" aria-hidden="true"><span>click the monitor</span></div>
+</section>
 
 <!-- =================== MORNING: AFTER THE STORY =================== -->
 <div class="after" id="after">
@@ -1065,7 +1078,7 @@ button { font: inherit; color: inherit; }
 
   /* header turns light once past the story */
   var topBar = document.querySelector('.top');
-  function solidTop() { var a = $('after'); if (a && topBar) topBar.classList.toggle('solid', a.getBoundingClientRect().top < 70); }
+  function solidTop() { var a = $('room') || $('after'); if (a && topBar) topBar.classList.toggle('solid', a.getBoundingClientRect().top < 70); }
   addEventListener('scroll', solidTop, { passive: true }); solidTop();
 
   /* giant name slides sideways as you scroll (scroll-linked, no autoplay) */
@@ -1162,5 +1175,7 @@ button { font: inherit; color: inherit; }
 })();
 </script>
 <script src="os.js" defer></script>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+<script type="module" src="room.js"></script>
 </body>
 </html>
