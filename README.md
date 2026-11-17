@@ -8,7 +8,7 @@ web products as a software engineer in Nairobi.
 ## What's on it
 
 * **The story:** the turning points, from the sensible degree to shipping with real teams
-* **Selected projects:** Fundi Notes, RIELA Connect, SNDBX Experts, Shaba Jewellery, AgriSmart Kenya and my contribution to the Hiero JS SDK
+* **Selected projects:** AgriSmart Kenya, PesaScore, Fundi Notes, RIELA Connect, SNDBX Experts, Shaba Jewellery and my merged pull requests to the Hiero JavaScript and Python SDKs
 * **Where I've worked**
 * **Contact:** email, LinkedIn and GitHub
 

@@ -138,6 +138,9 @@ button { font: inherit; color: inherit; }
 .a-fb { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-d); font-weight: 800; font-size: 1.6rem; color: rgba(255,255,255,.85); }
 .a-riela { background: linear-gradient(135deg, #5A3A0E, #9A6A1B); }
 .a-sndbx { background: linear-gradient(135deg, #123058, #1C4E8A); }
+.a-pesa { background: linear-gradient(135deg, #0F3D2A, #1B6B47); display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #E9FBEF; }
+.a-pesa b { font-family: var(--f-d); font-weight: 800; font-size: 2rem; line-height: 1; }
+.a-pesa small { font-family: var(--f-m); font-size: .62rem; letter-spacing: .08em; opacity: .8; }
 
 /* world overlay */
 .world { position: absolute; inset: 0; z-index: 12; opacity: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 120%, #1A2C6E, transparent 60%), var(--night); }
@@ -178,12 +181,13 @@ button { font: inherit; color: inherit; }
 .card p { margin: 0; color: var(--ink-2); font-size: .94rem; }
 .card .tg { display: flex; flex-wrap: wrap; gap: 5px; }
 .card .tg span { font-family: var(--f-m); font-size: .68rem; padding: 3px 9px; border-radius: 99px; background: var(--night-2); border: 1px solid var(--line); color: var(--ink-2); }
-.card .lk { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; }
+.card .lk { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
 .card .lk a { font-size: .84rem; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 99px; border: 1px solid var(--line); }
 .card .lk a:first-child { background: var(--ink); color: var(--night); border-color: var(--ink); }
 .card .lk a:hover { border-color: var(--amber); }
 .card.feat { grid-column: span 2; background: linear-gradient(135deg, #133D35, var(--panel) 60%); }
 @media (max-width: 620px) { .card.feat { grid-column: auto; } }
+@media (min-width: 961px) { .card.wide { grid-column: span 2; } }
 .badge { display: inline-block; font-family: var(--f-m); font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: var(--amber); color: #1A1406; margin-left: 8px; vertical-align: middle; }
 
 .xp { display: grid; border-top: 1px solid var(--line); }
@@ -446,18 +450,18 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8p
             <div class="lk"><a href="https://github.com/Kare100/sndbx-experts" target="_blank" rel="noopener">Code ↗</a></div></div>
         </article>
         <article class="win w5">
-          <div class="tb"><i></i><i></i><i></i>shaba-jewellery</div>
-          <div class="art a-shaba">SHABA</div>
-          <div class="bd"><h3>Shaba Jewellery</h3><p>An editorial e-commerce store with cart, checkout, a Postgres API and a full SEO checklist.</p>
-            <div class="tg"><span>Nuxt 3</span><span>Tailwind</span><span>Neon</span></div>
-            <div class="lk"><a href="https://github.com/Kare100/shaba-jewellery" target="_blank" rel="noopener">Code ↗</a></div></div>
+          <div class="tb"><i></i><i></i><i></i>pesascore</div>
+          <div class="art a-pesa"><b>712</b><small>LIMIT KES 8,500 · WHY ↓</small></div>
+          <div class="bd"><h3>PesaScore</h3><p>Turns an M-Pesa statement into an explainable credit score and a safe loan limit, for people with no bank history.</p>
+            <div class="tg"><span>Java 21</span><span>REST API</span><span>Docker</span></div>
+            <div class="lk"><a href="https://github.com/Kare100/pesascore" target="_blank" rel="noopener">Code ↗</a></div></div>
         </article>
         <article class="win w6">
-          <div class="tb"><i></i><i></i><i></i>hiero-sdk-js · PR #4715</div>
+          <div class="tb"><i></i><i></i><i></i>hiero-ledger · 3 merged PRs</div>
           <div class="art a-hiero"><div class="h">@@ internal helpers @@</div><div class="m">- function unusedHelper(bytes) {</div><div class="m">-   return bytes.slice(0, 4);</div><div class="p">+ // 4 dead helpers removed</div></div>
-          <div class="bd"><h3>Hiero JS SDK</h3><p>Open-source contribution to the Hedera SDK, through maintainer code review.</p>
-            <div class="tg"><span>JavaScript</span><span>Open source</span></div>
-            <div class="lk"><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4715" target="_blank" rel="noopener">See PR ↗</a></div></div>
+          <div class="bd"><h3>Hiero SDKs</h3><p>Three merged pull requests to the Hiero JavaScript and Python SDKs, through maintainer code review.</p>
+            <div class="tg"><span>JavaScript</span><span>Python</span><span>Open source</span></div>
+            <div class="lk"><a href="https://github.com/Kare100#open-source" target="_blank" rel="noopener">See PRs ↗</a></div></div>
         </article>
       </div>
     </div>
@@ -526,21 +530,24 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8p
           <p>Bilingual English/Swahili app: farmers photograph a sick leaf and get a Gemini-powered diagnosis, treatment plan, market prices and weather advice. Photos are compressed for slow rural networks, AI output is matched to a structured disease table, and there's CI with unit and integration tests.</p>
           <div class="tg"><span>React Native</span><span>Expo</span><span>Supabase</span><span>PostgreSQL</span><span>Gemini</span><span>Jest</span></div>
           <div class="lk"><a href="https://github.com/Kare100/agrismart-kenya" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">02 · AI agent</span><h3>Fundi Notes</h3><p>Voice notes from field technicians become structured job reports with missing-info flags and a daily summary.</p>
+        <article class="card"><span class="n">02 · fintech</span><h3>PesaScore</h3><p>Reads an M-Pesa statement and returns an explainable credit score (300–850) and a loan limit the person can afford, with the reasons in plain language.</p>
+          <div class="tg"><span>Java 21</span><span>REST API</span><span>Docker</span><span>GitHub Actions</span></div>
+          <div class="lk"><a href="https://github.com/Kare100/pesascore" target="_blank" rel="noopener">View code</a></div></article>
+        <article class="card"><span class="n">03 · AI agent</span><h3>Fundi Notes</h3><p>Voice notes from field technicians become structured job reports with missing-info flags and a daily summary.</p>
           <div class="tg"><span>FastAPI</span><span>React</span><span>TypeScript</span><span>LLMs</span></div>
           <div class="lk"><a href="https://github.com/Kare100/fundi-notes" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">03 · PWA</span><h3>RIELA Connect</h3><p>Connects farmers in Kenya and Ghana to post-harvest services, with bookings, price trends, weather and an AI advisor.</p>
+        <article class="card"><span class="n">04 · PWA</span><h3>RIELA Connect</h3><p>Connects farmers in Kenya and Ghana to post-harvest services, with bookings, price trends, weather and an AI advisor.</p>
           <div class="tg"><span>Next.js</span><span>TypeScript</span><span>Tailwind</span></div>
           <div class="lk"><a href="https://riela-connect-1.vercel.app" target="_blank" rel="noopener">Live demo</a><a href="https://github.com/Kare100/riela-connect" target="_blank" rel="noopener">Code</a></div></article>
-        <article class="card"><span class="n">04 · marketplace</span><h3>SNDBX Experts</h3><p>Matches small businesses with advisors in four cities; time-zone-aware booking, M-Pesa and 30 tests.</p>
+        <article class="card"><span class="n">05 · marketplace</span><h3>SNDBX Experts</h3><p>Matches small businesses with advisors in four cities; time-zone-aware booking, M-Pesa and 30 tests.</p>
           <div class="tg"><span>Flask</span><span>Python</span><span>pytest</span></div>
           <div class="lk"><a href="https://github.com/Kare100/sndbx-experts" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">05 · e-commerce</span><h3>Shaba Jewellery</h3><p>Editorial store with cart, checkout, a Postgres API and full SEO: canonicals, Open Graph, structured data.</p>
+        <article class="card"><span class="n">06 · e-commerce</span><h3>Shaba Jewellery</h3><p>Editorial store with cart, checkout, a Postgres API and full SEO: canonicals, Open Graph, structured data.</p>
           <div class="tg"><span>Nuxt 3</span><span>Tailwind</span><span>Neon</span></div>
-          <div class="lk"><a href="https://github.com/Kare100/shaba-jewellery" target="_blank" rel="noopener">View code</a></div></article>
-        <article class="card"><span class="n">06 · open source</span><h3>Hiero JS SDK</h3><p>Contribution to the Hedera JavaScript SDK: removed unused internal helpers through maintainer review.</p>
-          <div class="tg"><span>JavaScript</span><span>TypeScript</span></div>
-          <div class="lk"><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4715" target="_blank" rel="noopener">See the PR</a></div></article>
+          <div class="lk"><a href="https://shaba-jewellery.vercel.app" target="_blank" rel="noopener">Live demo</a><a href="https://github.com/Kare100/shaba-jewellery" target="_blank" rel="noopener">Code</a></div></article>
+        <article class="card wide"><span class="n">07 · open source</span><h3>Hiero SDKs</h3><p>Three merged pull requests through maintainer review: removed dead helpers and added missing tests in the JavaScript SDK, and fixed a CI workflow that reported false broken links in the Python SDK.</p>
+          <div class="tg"><span>JavaScript</span><span>Python</span><span>GitHub Actions</span></div>
+          <div class="lk"><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4715" target="_blank" rel="noopener">JS #4715</a><a href="https://github.com/hiero-ledger/hiero-sdk-js/pull/4767" target="_blank" rel="noopener">JS #4767</a><a href="https://github.com/hiero-ledger/hiero-sdk-python/pull/2795" target="_blank" rel="noopener">Python #2795</a></div></article>
       </div>
     </section>
 
