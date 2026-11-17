@@ -368,6 +368,7 @@ button { font: inherit; color: inherit; }
   .cap, .win, .role { transition: none; }
 }
 </style>
+<link rel="stylesheet" href="os.css">
 </head>
 <body>
 
@@ -378,6 +379,7 @@ button { font: inherit; color: inherit; }
   </a>
   <div class="top-r">
     <button class="chip hide-sm" type="button" data-cmdk aria-label="Open command menu"><kbd>⌘</kbd><kbd>K</kbd></button>
+    <button class="chip hide-sm" type="button" data-vos>💻 ValerieOS</button>
     <a class="chip hide-sm" href="#work">Skip the story ↓</a>
     <a class="chip amber" href="#contact">Hire me</a>
   </div>
@@ -640,7 +642,8 @@ button { font: inherit; color: inherit; }
         <h2>Next chapter:<br><em>your team?</em></h2>
         <p>Graduating in Software Engineering from USIU-Africa and open to roles in fintech, AI/ML and product engineering, in Nairobi or remote.</p>
         <div class="btns">
-          <a class="btn amber" href="mailto:1valeriemwangi@gmail.com">Email me</a>
+          <button class="btn amber" type="button" data-vos>Use my laptop ▸</button>
+          <a class="btn" href="mailto:1valeriemwangi@gmail.com">Email me</a>
           <a class="btn" href="https://linkedin.com/in/valeriemwangi" target="_blank" rel="noopener">LinkedIn</a>
           <a class="btn" href="#work">See all projects ↓</a>
         </div>
@@ -657,7 +660,7 @@ button { font: inherit; color: inherit; }
     <div class="cap" data-s="1"><p class="k">Chapter 1 · 2021</p><h2>The sensible degree.</h2><p>I started Financial Engineering at Strathmore: maths, markets, models. Safe, respectable, and I was good at it.</p></div>
     <div class="cap" data-s="2"><p class="k">Chapter 2 · 2022</p><h2>The wobble.</h2><p>A year in, I couldn't picture doing it for the rest of my life. Admitting that, when everyone thinks you chose well, is hard.</p></div>
     <div class="cap" data-s="3"><p class="k">Chapter 3 · Fall 2023</p><h2>I changed one word.</h2><p>Financial Engineering became Software Engineering at USIU-Africa. Same second word, much better fit. Dean's List every semester since.</p></div>
-    <div class="cap" data-s="4"><p class="k">Chapter 4 · Since</p><h2>Then I couldn't stop building.</h2><p>Six projects, each solving a real problem for real people. Click any window to open the code.</p></div>
+    <div class="cap" data-s="4"><p class="k">Chapter 4 · Since</p><h2>Then I couldn't stop building.</h2><p>Six projects, each solving a real problem for real people. Click any window to open the code, or step inside.</p><button class="use-laptop" type="button" data-vos>Use my laptop <span class="k">ValerieOS</span></button></div>
     <div class="cap" data-s="5"><p class="k">Chapter 5 · The world</p><h2>Shipping with real teams.</h2><p>From Nairobi to Accra, Berlin, Addis Ababa and Atlanta: internships, an AI role and a three-time-zone collaboration.</p></div>
 
     <ol class="rail" id="rail" aria-label="Story chapters">
@@ -698,6 +701,7 @@ button { font: inherit; color: inherit; }
             for people with <span class="u">no bank history<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M2 6c30-4 60-5 96 0"/></svg></span>,
             and for <span class="u">technicians in the field<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M2 8c25-6 55-6 96-3"/></svg></span>.</p>
           <div class="sig">Val <small>Valerie Mwangi · BSc Software Engineering, USIU-Africa</small></div>
+          <button class="use-laptop" type="button" data-vos style="margin-top:22px">💻 Step inside my laptop <span class="k">ValerieOS</span></button>
         </div>
         <div class="facts">
           <div class="fact"><span>Now</span><b>AI Expert at Clinq Africa</b></div>
@@ -1076,14 +1080,14 @@ button { font: inherit; color: inherit; }
   addEventListener('scroll', slideName, { passive: true }); slideName();
 
   /* round cursor label over project cards (mouse only) */
-  var cur = $('cur');
-  if (cur && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  var curEl = $('cur');
+  if (curEl && matchMedia('(hover: hover) and (pointer: fine)').matches) {
     [].slice.call(document.querySelectorAll('.proj')).forEach(function (p) {
-      p.addEventListener('pointerenter', function () { cur.textContent = p.getAttribute('data-cur') || 'View'; cur.classList.add('on'); });
-      p.addEventListener('pointerleave', function () { cur.classList.remove('on'); });
+      p.addEventListener('pointerenter', function () { curEl.textContent = p.getAttribute('data-cur') || 'View'; curEl.classList.add('on'); });
+      p.addEventListener('pointerleave', function () { curEl.classList.remove('on'); });
     });
-    addEventListener('pointermove', function (e) { cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; }, { passive: true });
-  } else if (cur) { cur.remove(); }
+    addEventListener('pointermove', function (e) { curEl.style.left = e.clientX + 'px'; curEl.style.top = e.clientY + 'px'; }, { passive: true });
+  } else if (curEl) { curEl.remove(); }
 
   /* command menu */
   var cmdk = $('cmdk'), cIn = $('cmdkIn'), cList = $('cmdkList'), lastFocus = null, sel = 0, shown = [];
@@ -1094,6 +1098,7 @@ button { font: inherit; color: inherit; }
     { t: 'open-source', d: 'Hiero pull requests', k: 'oss hiero prs git', run: function () { goTo('oss'); } },
     { t: 'experience', d: 'Where I’ve worked', k: 'xp jobs internships skills', run: function () { goTo('xp'); } },
     { t: 'contact', d: 'Get in touch', k: 'hire email', run: function () { goTo('contact'); } },
+    { t: 'laptop', d: 'Open ValerieOS, my laptop', k: 'os desktop computer', run: function () { window.ValerieOS && ValerieOS.open(); } },
     { t: 'story', d: 'Replay the story from the top', k: 'top start home', run: function () { goTo('top'); } },
     { t: 'copy-email', d: '1valeriemwangi@gmail.com', k: 'email mail', run: copyEmail },
     { t: 'email', d: 'Write me an email', k: 'mail contact', run: function () { location.href = 'mailto:1valeriemwangi@gmail.com'; } },
@@ -1156,5 +1161,6 @@ button { font: inherit; color: inherit; }
   });
 })();
 </script>
+<script src="os.js" defer></script>
 </body>
 </html>
